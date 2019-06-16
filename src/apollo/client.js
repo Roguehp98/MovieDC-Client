@@ -11,12 +11,12 @@ const WS_SERVER = "ws://localhost:6969";
 const cache = new InMemoryCache(); 
 
 const httpLink = new HttpLink({
-    uri:"http://localhost:6969",
+    uri: SERVER,
     credentials: "include", 
 });
 
 export const wsLink = new WebSocketLink({
-    uri: "ws://localhost:6969",
+    uri: WS_SERVER,
     options: {
         reconnect: true,
         connectionParams: async() => {
@@ -45,7 +45,7 @@ const link = split(
       wsLink,
       httpLink,
 )
-// uri: "http://localhost:6969",
+
 const client  = new ApolloClient({
     link,
     cache,

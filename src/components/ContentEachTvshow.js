@@ -6,6 +6,8 @@ class ContentEachTvshow extends Component {
         tvshowfv: false
     }
     componentDidMount(){
+        this.props.subscriptionAddListfv();
+        this.props.subscriptionRmListfv();
         if(sessionStorage.getItem('status')){
             const listfv = this.props.user.listfv;
             const id = this.props.tvshow.idTv;

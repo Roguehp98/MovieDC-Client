@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Query} from 'react-apollo';
 import gql from 'graphql-tag';
@@ -16,7 +16,7 @@ const ListFavor = gql`
     }
 `
 
-const ListFavorSubscription = gql`
+const AddListFavorSubscription = gql`
     subscription addListFavor {
         addListFavor {
             listfv {
@@ -28,40 +28,71 @@ const ListFavorSubscription = gql`
     }
 `
 
-class FavoriteScreen extends Component {
-  
-    render() {    
-        // console.log("B")
+const RemoveListFavorSubscription = gql`
+    subscription removeListFavor {
+        removeListFavor {
+            listfv {
+                id
+            }
+        }
+    }
+` 
 
+const FavoriteScreen = () => {
         const id = sessionStorage.getItem('id') ? sessionStorage.getItem('id') : ""   ;        
         return (
             <Query query={ListFavor} variables={{idUser: id}}>
-                {({data: {user},loading, subscribeToMore}) => {
+                {({data: {user},loading,subscribeToMore}) => {
                     if(loading) return (<div></div>)
                     const more = () => subscribeToMore({
-                        document: ListFavorSubscription,
+                        document: AddListFavorSubscription,
                         updateQuery: (prev, {subscriptionData}) => {
-                            console.log("B")
-                            console.log(prev)
-                            console.log(subscriptionData)
                             if(!subscriptionData.data) return prev;
-                            const newListfv = subscriptionData.data.addListFavor;
-                            return{
-                                user: [...prev.user,newListfv]
-                            }
+                            const newListFv = subscriptionData.data.addListFavor.listfv[0];
+                            // console.log(newListFv)
+                            // console.log([...prev.user.listfv,newListFv])
+                            return {
+                                user: {
+                                    listfv: [...prev.user.listfv,newListFv],
+                                    __typename: "User"
+                                    },
+                                }
+                        } 
+                    })
+                    const less = () => subscribeToMore({
+                        document: RemoveListFavorSubscription,
+                        updateQuery: (prev,{subscriptionData}) => {
+                            if(!subscriptionData.data) return prev;
+                            const listfv = prev.user.listfv;
+                            const objRemove = subscriptionData.data.removeListFavor.listfv[0];
+                            // console.log(listfv)
+                            listfv.forEach((obj,index) => {
+                                if(obj.id === objRemove.id){
+                                    listfv.splice(index,1);
+                                }
+                            })
+                            // console.log(listfv)
+                            return {
+                                user: {
+                                    listfv,
+                                    __typename: "User"
+                                },
+                            };
                         }
                     })
-                
                     return (
                         <div>     
-                            <TableListFv moviefv={user} subscribeToNewListfv={more}
+                            <TableListFv 
+                            moviefv={user} 
+                            subscriptionAddListfv={more}
+                            subscriptionRmListfv={less}
                             />
                         </div>  
                     )
                 }}
             </Query>
         );
-    }
 }
+
 
 export default FavoriteScreen;

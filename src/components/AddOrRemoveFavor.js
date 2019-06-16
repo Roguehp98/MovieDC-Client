@@ -39,9 +39,7 @@ class ButtonAdd extends Component {
                                 typeMovie: this.props.info.type
                             }
                          }).then(res => {
-                            this.props.onChangeFavor();
-                            // console.log("A")
-                            // console.log(this.props.status)
+                            this.props.onChangeFavor(this.props.index);
                         }).catch(err => {return <div></div>})
                         }
                          size="small" color="secondary" 
@@ -71,8 +69,8 @@ class ButtonRemove extends Component {
                             
                         }
                      }).then((res) => {
-                         this.props.onChangeFavor();
-                            // console.log(this.props.status)
+                         this.props.onChangeFavor(this.props.index);
+                            // console.log(this.props.index)
                     }).catch(err => {
                         return <div></div>
                     })
@@ -94,8 +92,8 @@ class AddOrRemoveFavor extends Component {
     render() {
         // console.log(this.props.info)
         const movieFavour = (this.props.status === true) 
-                            ? <ButtonRemove user={this.props.user} info={this.props.info} onChangeFavor={this.props.onChangeFavor} status={this.props.status}/>
-                            : <ButtonAdd user={this.props.user} info={this.props.info} onChangeFavor={this.props.onChangeFavor} status={this.props.status}/>
+                            ? <ButtonRemove user={this.props.user} info={this.props.info} onChangeFavor={this.props.onChangeFavor} status={this.props.status} index={this.props.index}/>
+                            : <ButtonAdd user={this.props.user} info={this.props.info} onChangeFavor={this.props.onChangeFavor} status={this.props.status} index={this.props.index}/>
         var popOver = !sessionStorage.getItem("status") 
             ? (<span>
                 <UncontrolledPopover trigger="focus" placement="right" target="popover">

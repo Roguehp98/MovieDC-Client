@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faUser} from '@fortawesome/free-solid-svg-icons';
-import {withRouter} from 'react-router-dom';
-import {Mutation} from 'react-apollo';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
+import { withRouter } from 'react-router-dom';
+import { Mutation } from 'react-apollo';
+import { Button, Tooltip } from 'reactstrap';
 import gql from 'graphql-tag';
 
 const LogoutQuery = gql`
@@ -13,60 +13,45 @@ const LogoutQuery = gql`
 `
 
 class ButtonLogin extends Component {
-    constructor(props) {
-        super(props);
-    
-        this.toggle = this.toggle.bind(this);
-        this.state = {
-          dropdownOpen: false
-        };
-      }
-    
-      toggle() {
-        this.setState(prevState => ({
-          dropdownOpen: !prevState.dropdownOpen
-        }));
-      }
+  constructor(props) {
+    super(props);
 
-      render() {
-        return (
-          <Mutation mutation={LogoutQuery}>
-            {(logout,{loading}) => {
-              // if(loading) return (<div></div>)
-            
-              return (<div className="login mt-2 mr-3 text-white">
-              <style>
-              {
-                `.menu-logout:hover {
-                  background:#363D39
-                }`
-              }
-              </style>
-                <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle} >
-                    <DropdownToggle caret style={{backgroundColor: "black"}}>
-                        <FontAwesomeIcon icon={faUser} className="size-icon"/>
-                        {sessionStorage.getItem("username")}
-                    </DropdownToggle>
-                    <DropdownMenu  right style={{backgroundColor: "#333"}}>
-                        <DropdownItem header className="text-white">Welcome</DropdownItem>
-                        <DropdownItem className="text-white menu-logout">Your profile</DropdownItem>
-                        <DropdownItem divider />
-                        <DropdownItem 
-                            className="text-white menu-logout" 
-                            onClick={() => logout().then(res => {
-                              sessionStorage.clear();
-                              const uri = window.location.href.split('0/',2);
-                              this.props.history.push("/" + uri[1]);
-                            })}
-                            
-                            >Logout</DropdownItem>
-                    </DropdownMenu>
-                </Dropdown>
-            </div>)
-            }}
-          </Mutation>
-        );
-      }
+    this.toggle = this.toggle.bind(this);
+    this.state = {
+      tooltipOpen: false
+    };
+  }
+
+  toggle() {
+    this.setState({
+      tooltipOpen: !this.state.tooltipOpen
+    });
+  }
+  render() {
+    const titleLogoutButton = (sessionStorage.getItem('status')) ? `Welcome ${sessionStorage.getItem('username')}`: "No user" ;
+    return (
+      <Mutation mutation={LogoutQuery}>
+        {(logout, { loading }) => {
+          return (
+            <div className="mt-2 login ml-auto-lg " id="TooltipExample">
+              <Button className="text-white menu-logout"
+                onClick={() => logout().then(res => {
+                  sessionStorage.clear();
+                  const uri = window.location.href.split('0/', 2);
+                  this.props.history.push("/" + uri[1]);
+                })}>
+                <FontAwesomeIcon icon={faUser} className="size-icon" />
+                Logout
+                <Tooltip placement="bottom-start" isOpen={this.state.tooltipOpen} target="TooltipExample" toggle={this.toggle}>
+                  {titleLogoutButton}
+                </Tooltip>
+              </Button>
+            </div>
+          )
+        }}
+      </Mutation>
+    );
+  }
 }
 
 export default withRouter(ButtonLogin);

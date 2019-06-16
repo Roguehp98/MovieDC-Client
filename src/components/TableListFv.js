@@ -1,15 +1,9 @@
 import React, { Component } from 'react';
 import { Table } from 'reactstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faHeart,faHeartBroken} from '@fortawesome/free-solid-svg-icons';
 import Button from '@material-ui/core/Button';
 import { Alert } from 'reactstrap';
 import {Link} from 'react-router-dom';
 import AddOrRemoveFavor from './AddOrRemoveFavor';
-
-function checkMovie(element){
-    return element === true ? <FontAwesomeIcon icon={faHeart} className="size-icon-v2"/> : <FontAwesomeIcon icon={faHeartBroken} className="size-icon-v2"/>       
-}
 
 class TableListFv extends Component {
     state = {
@@ -19,8 +13,8 @@ class TableListFv extends Component {
         height: "0px"
     }
     componentDidMount(){
-        // console.log(this.props.subscribeToNewListfv())
-        this.props.subscribeToNewListfv();
+        this.props.subscriptionAddListfv();
+        this.props.subscriptionRmListfv();
         if(sessionStorage.getItem('id')){
             const listfv = this.props.moviefv.listfv;
             var listId = [];
@@ -47,10 +41,10 @@ class TableListFv extends Component {
       
     }
 
-    onChangeFavor = (index) => {
-        // console.log(index)
+    onChangeFavor = (e) => {
+        // console.log(e)
         // var movieStatus = this.state.movieStatus;
-        // movieStatus[0] = !movieStatus[0];
+        // movieStatus[e] = !movieStatus[e];
         // this.setState({movieStatus});
     }
 
@@ -66,7 +60,7 @@ class TableListFv extends Component {
                     <th scope="row">{index + 1}</th>
                     <td>{movie.name}</td>
                     <td>{movie.type}</td>
-                    <td className='text-center'><AddOrRemoveFavor user={idUser} info={info} status={this.state.movieStatus[index]} onChangeFavor={this.onChangeFavor(index)} /></td>
+                    <td className='text-center'><AddOrRemoveFavor user={idUser} info={info} status={this.state.movieStatus[index]} onChangeFavor={this.onChangeFavor} index={index}/></td>
                 </tr>)
             )
         }
@@ -101,7 +95,7 @@ class TableListFv extends Component {
                                         </Button>
                                     or
                                         <Button variant="contained" size="medium" color="primary" className="mr-2 ml-2">
-                                                Sign up
+                                            <Link to={"/signup"} style={{color:"white", textDecoration: 'none'}}>Sign up</Link>    
                                         </Button>
                                 </h4>
                             </Alert>) 

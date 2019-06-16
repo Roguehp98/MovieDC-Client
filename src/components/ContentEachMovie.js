@@ -6,6 +6,8 @@ class ContentEachMovie extends Component {
         moviefv: false
     }
     componentDidMount(){
+        this.props.subscriptionAddListfv();
+        this.props.subscriptionRmListfv();
         if(sessionStorage.getItem('status')){
             const listfv = this.props.user.listfv;
             const id = this.props.movie.id;
@@ -17,7 +19,8 @@ class ContentEachMovie extends Component {
         }
     }
 
-    onChangeFavor = (e) => {this.setState({moviefv: !this.state.moviefv})};
+    onChangeFavor = (e) => { 
+        this.setState({moviefv: !this.state.moviefv})};
 
     render(){
         const {movie,keyYt} =  this.props;

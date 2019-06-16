@@ -1,51 +1,84 @@
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import dc from '../img/dc.png';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faFilm,faTv,faHeart,faUser,faNewspaper} from '@fortawesome/free-solid-svg-icons';
+import { faFilm, faTv, faHeart, faUser, faNewspaper } from '@fortawesome/free-solid-svg-icons';
+import { Collapse, Navbar, NavbarToggler, Nav, NavItem } from 'reactstrap';
 import ButtonLogin from './ButtonLogin';
 
-class Navbar extends Component {
-   
+class NavbarMenu extends Component {
+    constructor(props) {
+        super(props);
+
+        this.toggleNavbar = this.toggleNavbar.bind(this);
+        this.state = {
+            collapsed: true
+        };
+    }
+
+    toggleNavbar() {
+        this.setState({
+            collapsed: !this.state.collapsed
+        });
+    }
     render() {
+        // const nameuser = (this.props.isAuthenticated() && this.state.collapsed === false) ? (
+        //     <NavItem className="navbar-extend-lg"><small>Welcome {sessionStorage.getItem("username")}</small></NavItem>
+        // ) : <div></div>
         const Authed = this.props.isAuthenticated() ? (
-            <ButtonLogin />
-        ) : 
-        (
-            <div className="login mt-2 ">
-                <FontAwesomeIcon icon={faUser} className="size-icon"/>
-                <Link to ={"/login"} className="text-white">Login</Link>
-            </div>
-        )
+            <ButtonLogin collapsed={this.state.collapsed} />
+        ) :
+            (
+                <div className=" mt-2 login ml-auto-lg ">
+                    <FontAwesomeIcon icon={faUser} className="size-icon" />
+                    <Link to={"/login"} className="text-white" style={{ textDecoration: "none" }}>Login</Link>
+                </div>
+            )
+
         return (
-            <div className="container-fluid nav inRow">
-                    <div className="logo ">
+            <div>
+                <Navbar className="container-fluid navbar navbar-expand-lg inRow" light>
+                    <div className="logo navbar-brand">
                         <Link to={"/"} >
-                            <img className="logo size-16 ml-3 mr-5" src={dc} alt="logo" />
+                            <img className="logo ml-3 mr-5" src={dc} alt="logo" />
                         </Link>
                     </div>
-                    <div className="mt-2 element text-center">
-                        <FontAwesomeIcon icon={faFilm} className="size-icon"/>
-                        <Link to={"/movie"} className="text-white" style={{textDecoration: "none"}}>Movies</Link>
-                    </div>
-                    <div className="mt-2 element text-center">
-                        <FontAwesomeIcon icon={faTv} className="size-icon"/>
-                        <Link to={"/tvshow"} className="text-white" style={{textDecoration: "none"}}>TV Shows</Link>
-                    </div>
-                    <div className="mt-2 element text-center">
-                        <FontAwesomeIcon icon={faHeart} className="size-icon"/>
-                        <Link to={"/fv"} className="text-white" style={{textDecoration: "none"}}>Favorites</Link>
-                    </div>
-                    <div className="mt-2 element text-center">
-                        <FontAwesomeIcon icon={faNewspaper} className="size-icon"/>
-                        <Link to={"/news"} className="text-white" style={{textDecoration: "none"}}>News</Link>
-                    </div>
-                    {Authed
-                    }
-                </div>      
+                    <NavbarToggler onClick={this.toggleNavbar} className="bg-secondary ml-auto" />
+                    <Collapse isOpen={!this.state.collapsed} navbar>
+                        <Nav className="inRow " navbar>
+                            {/* {nameuser} */}
+                            <NavItem>
+                                <div className="mt-2 element text-center-lg ">
+                                    <FontAwesomeIcon icon={faFilm} className="size-icon" />
+                                    <Link to={"/movie"} className="text-white" style={{ textDecoration: "none" }}>Movies</Link>
+                                </div>
+                            </NavItem>
+                            <NavItem>
+                                <div className="mt-2 element text-center-lg">
+                                    <FontAwesomeIcon icon={faTv} className="size-icon" />
+                                    <Link to={"/tvshow"} className="text-white" style={{ textDecoration: "none" }}>TV Shows</Link>
+                                </div>
+                            </NavItem>
+                            <NavItem>
+                                <div className="mt-2 element text-center-lg">
+                                    <FontAwesomeIcon icon={faHeart} className="size-icon" />
+                                    <Link to={"/fv"} className="text-white" style={{ textDecoration: "none" }}>Favorites</Link>
+                                </div>
+                            </NavItem>
+                            <NavItem>
+                                <div className="mt-2 element text-center-lg">
+                                    <FontAwesomeIcon icon={faNewspaper} className="size-icon" />
+                                    <Link to={"/news"} className="text-white" style={{ textDecoration: "none" }}>News</Link>
+                                </div>
+                            </NavItem>
+                        </Nav>
+                        {Authed}
+                    </Collapse>
+                </Navbar>
+            </div>
         );
     }
 }
 
-export default Navbar;
+export default NavbarMenu;

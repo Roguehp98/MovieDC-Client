@@ -9,6 +9,7 @@ import TvshowScreen from './containers/TvshowScreen';
 import EachTvShowScreen from './containers/EachTvShowScreen';
 import FavoriteScreen from './containers/FavoriteScreen';
 import NewsScreen from './containers/NewsScreen';
+import SignupScreen from './containers/SignupScreen';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import {ApolloProvider} from 'react-apollo';
@@ -35,25 +36,28 @@ class App extends Component {
               return <HomeScreen />
             }} />
             <Route path="/login" render={(props) => {
-              return <LoginScreen isAuthenticated={this.isAuthenticated}/>
+              return <LoginScreen />
             }} />
             <Route exact path="/fv" render={(props) => {
-              return <FavoriteScreen isAuthenticated={this.isAuthenticated}/>
+              return <FavoriteScreen />
             }} />
             <Route exact path="/movie" render={(props) => {
-              return <MovieScreen isAuthenticated={this.isAuthenticated}/>
+              return <MovieScreen />
             }} />
             <Route exact path="/movie/:IdMovie&:keyYt" render={(props) => {
-              return <EachMovieScreen isAuthenticated={this.isAuthenticated} {...props}/>
+              return <EachMovieScreen {...props}/>
             }} />
             <Route exact path="/tvshow" render={(props) => {
-              return <TvshowScreen isAuthenticated={this.isAuthenticated} />
+              return <TvshowScreen />
             }} />
             <Route exact path="/tvshow/:IdtvShow&:keyYt" render={(props) => {
-              return <EachTvShowScreen isAuthenticated={this.isAuthenticated} {...props}/>
+              return <EachTvShowScreen {...props}/>
             }} />
             <Route exact path="/news" render={(props) => {
-              return <NewsScreen isAuthenticated={this.isAuthenticated} />
+              return <NewsScreen />
+            }} />
+            <Route path="/signup" render={(props) => {
+              return <SignupScreen />
             }} />
             <Route path="/" render={(props) => {
               return <Footer />
