@@ -4,10 +4,14 @@ import {WebSocketLink} from 'apollo-link-ws';
 import {getMainDefinition } from "apollo-utilities";
 import {split} from 'apollo-link';
 import { InMemoryCache } from 'apollo-cache-inmemory';
+import config from "../config";
 
-const SERVER = "http://localhost:6969";
-const WS_SERVER = "ws://localhost:6969";
-
+const SERVER = config.httpLink;
+// "https://dc-server.herokuapp.com";
+// 'http://localhost:6969'
+const WS_SERVER = config.websocketLink;
+// "wss://dc-server.herokuapp.com";
+// 'ws://localhost:6969'
 const cache = new InMemoryCache(); 
 
 const httpLink = new HttpLink({
