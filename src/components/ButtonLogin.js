@@ -37,7 +37,7 @@ class ButtonLogin extends Component {
               <Button className="text-white menu-logout"
                 onClick={() => logout().then(res => {
                   sessionStorage.clear();
-                  const uri = window.location.href.split('0/', 2);
+                  const uri = window.location.href.split('com/', 2);
                   this.props.history.push("/" + uri[1]);
                 })}>
                 <FontAwesomeIcon icon={faUser} className="size-icon" />
