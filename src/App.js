@@ -53,11 +53,11 @@ class App extends Component {
             <Route exact path="/tvshow/:IdtvShow&:keyYt" render={(props) => {
               return <EachTvShowScreen {...props}/>
             }} />
-            <Route exact path="/news" render={(props) => {
-              return <NewsScreen />
-            }} />
             <Route path="/signup" render={(props) => {
               return <SignupScreen />
+            }} />
+             <Route exact path="/news" render={(props) => {
+              return <NewsScreen />
             }} />
             <Route path="/" render={(props) => {
               return <Footer />

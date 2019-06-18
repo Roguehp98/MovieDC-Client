@@ -26,7 +26,7 @@ class SlickMovie extends Component {
         return (
             <div className="slickMovie" style={{marginBottom: "20px"}}>
                 <br />
-                <h1 className="font-weight-bold m-4 text-white">Whats Hot</h1>
+                <h1 className="font-weight-bold m-4 text-white" style={{fontSize: "35px"}}>Whats Hot</h1>
                 <Slider {...settings}>
                     {allImages}
                 </Slider>

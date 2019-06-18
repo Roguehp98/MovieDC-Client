@@ -6,10 +6,13 @@ import {split} from 'apollo-link';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import config from "../config";
 
-const SERVER = config.httpLink;
+const SERVER = 
+// config.httpLink
+config.httpLink;
 // "https://dc-server.herokuapp.com";
 // 'http://localhost:6969'
-const WS_SERVER = config.websocketLink;
+const WS_SERVER = 
+config.websocketLink;
 // "wss://dc-server.herokuapp.com";
 // 'ws://localhost:6969'
 const cache = new InMemoryCache(); 

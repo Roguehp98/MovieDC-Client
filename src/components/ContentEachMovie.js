@@ -59,7 +59,7 @@ class ContentEachMovie extends Component {
                         position: absolute;
                         top: 4px; right: -11px;
                         width: 21px;
-                        height: 21px;
+                        height: 30px;
                         transform: rotate(45deg);
                     }
                     `
@@ -74,10 +74,16 @@ class ContentEachMovie extends Component {
                 </div>
                 <div></div>
                 <div className="navbar-intro" style={{position: "relative", marginTop: "480px",backgroundColor:"rgb(26, 26, 26)"}}>
-                    <div className="obj mt-auto mb-auto arrow">Movie|{movie.title}</div>
-                    <div className="obj mt-auto mb-auto">About</div>
-                    <div className="obj mt-auto mb-auto">Videos</div>
-                    <div className="obj mt-auto mb-auto">Featured</div>
+                    <div className="obj mt-auto mb-auto arrow col-md-auto">Movie|{movie.title}</div>
+                    <div className="col-md"></div>
+                    <div className="col-md-3">
+                        <div className="row obj2">
+                            <div className=" mt-auto mb-auto col">About</div>
+                            <div className=" mt-auto mb-auto col">Videos</div>
+                            <div className=" mt-auto mb-auto col">Featured</div>
+                        </div>
+                    </div>
+                    
                 </div>
                 <div className="nav-review ">
                     <div className="card " style={{maxWidth: "75%", color: "black", backgroundColor:"rgb(30, 30, 30)"}}>

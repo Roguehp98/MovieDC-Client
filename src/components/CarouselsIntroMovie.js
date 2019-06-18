@@ -89,7 +89,7 @@ class Carousels extends Component {
           {
             `.custom-tag {
                 max-width: 100%;
-                height: 500px;
+                height: 50%;
                 background: black;
               },
             `

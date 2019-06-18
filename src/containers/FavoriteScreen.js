@@ -42,8 +42,9 @@ const FavoriteScreen = () => {
         const id = sessionStorage.getItem('id') ? sessionStorage.getItem('id') : ""   ;        
         return (
             <Query query={ListFavor} variables={{idUser: id}}>
-                {({data: {user},loading,subscribeToMore}) => {
+                {({data: {user },loading,subscribeToMore}) => {
                     if(loading) return (<div></div>)
+                    // console.log(user)
                     const more = () => subscribeToMore({
                         document: AddListFavorSubscription,
                         updateQuery: (prev, {subscriptionData}) => {

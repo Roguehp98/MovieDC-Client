@@ -24,11 +24,12 @@ class TableListFv extends Component {
             listfv.forEach(movie => {
                 listId.push(movie.id);
             })
-            if(listfv && listfv.length > 0)
+            if(listfv && listfv.length > 7)
                 this.setState({
                     moviefv: listfv,
                     movieId: listId,
-                    movieStatus: listStatus
+                    movieStatus: listStatus,
+                    // height: "100%"
                 })
             else 
                 this.setState({
@@ -37,6 +38,8 @@ class TableListFv extends Component {
                     movieStatus: listStatus,
                     height: "500px"
                 })           
+        }else {
+            this.setState({height: "500px"})
         }
       
     }
@@ -101,7 +104,7 @@ class TableListFv extends Component {
                             </Alert>) 
        
         return (
-                <div className="my-4" style={{color:"white", height: `500px`}}>
+                <div className="my-4" style={{color:"white", height:`${this.state.height}`}}>
                     <h3 className="text-center white">List favourite</h3>
                     {alertUser}
                 </div>
