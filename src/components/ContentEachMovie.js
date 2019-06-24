@@ -59,7 +59,7 @@ class ContentEachMovie extends Component {
                         position: absolute;
                         top: 4px; right: -11px;
                         width: 21px;
-                        height: 30px;
+                        height: 21px;
                         transform: rotate(45deg);
                     }
                     `
