@@ -10,7 +10,7 @@ class ContentEachMovie extends Component {
         this.props.subscriptionRmListfv();
         if(sessionStorage.getItem('status')){
             const listfv = this.props.user.listfv;
-            const id = this.props.movie.id;
+            const id = this.props.movie.movieID;
             listfv.forEach(movie => {
                 if(movie.id === id){
                     this.setState({moviefv: true})
@@ -29,7 +29,7 @@ class ContentEachMovie extends Component {
         genre = genre.concat(movie.genres);
         // set props for button add/remove movie favorite
         const idUser = sessionStorage.getItem('id') ? sessionStorage.getItem('id') : ""
-        const id = movie.id;
+        const id = movie.movieID;
         const name = movie.title;
         const type = "Movie";
         const info = {id,name,type};
@@ -66,7 +66,7 @@ class ContentEachMovie extends Component {
                 }
             </style>
 
-            <div className="text-white content"> 
+            <div className="text-white content" > 
                 <div className="trailer" style={{position: "relative"}}>
                     <div className="video embed-responsive embed-responsive-16by9">
                         <iframe className="card-img-top embed-responsive-item" title={`${keyYt}`} src={`https://www.youtube.com/embed/${keyYt}`} ></iframe>
@@ -89,7 +89,7 @@ class ContentEachMovie extends Component {
                     <div className="card " style={{maxWidth: "75%", color: "black", backgroundColor:"rgb(30, 30, 30)"}}>
                         <div className="row no-gutters">
                             <div className="col-md-4">
-                                <img src={movie.poster_path} className="card-img" alt={movie.title} style={{padding:"30px"}}/>
+                                <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} className="card-img" alt={movie.title} style={{padding:"30px"}}/>
                             </div>
                             <div className="col-md-8">
                                 <div className="card-body text-white">

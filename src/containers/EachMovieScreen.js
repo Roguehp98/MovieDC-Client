@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {Query} from 'react-apollo';
 import gql from 'graphql-tag';
 import ContentEachMovie from '../components/ContentEachMovie';
+import Comments from '../components/Comments';
 // import Slider from "react-slick";
 // import SlickVideo from '../components/SlickVideo';
 
@@ -20,17 +21,25 @@ const User = gql`
 
 const EachMovie = gql`
     query getMovie($id: String!){
-        getMovieByID(id: $id) {
-            id
+        getInfoMovie(id: $id) {
+            movieID
             title
             genres
             homepage
-            imdb_id
             poster_path
+            overview
             runtime
             vote_average
-            overview
             release_date
+            comments{
+                __typename
+                title
+                owner{
+                    id
+                    username
+                }
+                createdAt
+            }
         }  
     }
 `;
@@ -57,6 +66,34 @@ const RemoveListFavorSubscription = gql`
     }
 ` 
 
+const RemoveCommentSubscription = gql`
+    subscription removedComment{
+        removedComment{
+            comments {
+                owner {
+                    id
+                }
+                createdAt
+            }
+        }
+    }
+`
+
+const AddCommentSubscription = gql`
+    subscription addedComment{
+        addedComment {
+            comments {
+                title
+                owner {
+                    id
+                    username
+                }
+                createdAt
+            }
+        }
+    }
+`
+
 class EachMovieScreen extends Component {
    constructor(props){
     super();
@@ -75,7 +112,58 @@ class EachMovieScreen extends Component {
     
         return (
             <Query query={EachMovie} variables={{id}} >
-                {({data: {getMovieByID},loading:loadingOne}) => (
+                {({data: {getInfoMovie},loading:loadingOne,subscribeToMore}) => {
+                    // console.log(getInfoMovie)
+                const removeCmt = () => subscribeToMore({
+                    document:RemoveCommentSubscription,
+                    updateQuery: (prev,{subscriptionData}) => {
+                        if(!subscriptionData.data) return prev;
+                        const comments = prev.getInfoMovie.comments;
+                        const objRemove = subscriptionData.data.removedComment.comments[0];
+                        comments.forEach((cmt,index) => {
+                            if(cmt.owner.id === objRemove.owner.id && cmt.createdAt === objRemove.createdAt)
+                                comments.splice(index,1);
+                        })
+                        return {
+                            getInfoMovie: { 
+                                movieID: prev.getInfoMovie.movieID,
+                                title: prev.getInfoMovie.title,
+                                genres: prev.getInfoMovie.genres,
+                                homepage: prev.getInfoMovie.homepage,
+                                poster_path: prev.getInfoMovie.poster_path,
+                                runtime: prev.getInfoMovie.runtime,
+                                overview: prev.getInfoMovie.overview,
+                                vote_average: prev.getInfoMovie.vote_average,
+                                release_date: prev.getInfoMovie.release_date,
+                                comments,
+                                __typename: "Movie"
+                            }
+                        };
+                    }
+                })
+                const addCmt = () => subscribeToMore({
+                    document: AddCommentSubscription,
+                    updateQuery: (prev,{subscriptionData}) => {
+                        if(!subscriptionData.data) return prev;
+                        const newCmt = subscriptionData.data.addedComment.comments[0];  
+                        return {
+                            getInfoMovie: {
+                                movieID: prev.getInfoMovie.movieID,
+                                title: prev.getInfoMovie.title,
+                                genres: prev.getInfoMovie.genres,
+                                homepage: prev.getInfoMovie.homepage,
+                                poster_path: prev.getInfoMovie.poster_path,
+                                runtime: prev.getInfoMovie.runtime,
+                                overview: prev.getInfoMovie.overview,
+                                vote_average: prev.getInfoMovie.vote_average,
+                                release_date: prev.getInfoMovie.release_date,
+                                comments: [newCmt, ...prev.getInfoMovie.comments],
+                                __typename: "Movie"
+                            }
+                        };
+                    }
+                })
+                return (
                     <Query query={User} variables={{idUser}} >
                         {({data: {user},loading:loadingTwo, error,subscribeToMore}) => {
                             if(loadingOne || loadingTwo) return (<div></div>)
@@ -113,16 +201,22 @@ class EachMovieScreen extends Component {
                                     };
                                 }
                             })
-                            return (<ContentEachMovie 
-                                movie={getMovieByID} 
+                            
+                            return (<div><ContentEachMovie 
+                                movie={getInfoMovie} 
                                 user={user} 
                                 keyYt={this.state.keyYt}
                                 subscriptionAddListfv={more}
                                 subscriptionRmListfv={less}
-                                />)
+                                />
+                                <Comments comments = {getInfoMovie.comments} idMovie={id}
+                                    subscriptionRmCmt={removeCmt}
+                                    subscriptionAddCmt={addCmt}
+                                />
+                                </div>)
                         }}
                     </Query>
-                )}  
+                )} } 
             </Query>
         );
     }
